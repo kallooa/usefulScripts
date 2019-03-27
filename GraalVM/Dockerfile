@@ -41,4 +41,4 @@ CMD java -version
 RUN gu install r && gu install python && gu install ruby
 
 RUN wget https://raw.githubusercontent.com/kallooa/usefulScripts/master/rpkginstall && chmod +x rpkginstall
-RUN cat Rpackages.txt | while read line; do echo "./rpkginstall $line"; done;
+RUN cat Rpackages.txt | while read line; do eval "$(echo "./rpkginstall $line")"; done;
