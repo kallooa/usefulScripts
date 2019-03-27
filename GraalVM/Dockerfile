@@ -23,8 +23,6 @@ RUN curl -o /etc/yum.repos.d/public-yum-ol7.repo http://yum.oracle.com/public-yu
 
 RUN fc-cache -f -v
 
-ADD ./gu-wrapper.sh /usr/local/bin/gu
-
 RUN set -eux \
     && curl --fail --silent --location --retry 3 ${GRAALVM_PKG} \
     | gunzip | tar x -C /opt/ \
