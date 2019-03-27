@@ -1,6 +1,6 @@
 FROM oraclelinux:7-slim
 
-ARG GRAAL_VERSION=1.0.0-rc12
+ARG GRAAL_VERSION=1.0.0-rc14
 ENV LANG=en_US.UTF-8
 
 ENV GRAALVM_PKG=https://github.com/oracle/graal/releases/download/vm-$GRAAL_VERSION/graalvm-ce-$GRAAL_VERSION-linux-amd64.tar.gz \
