@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 pkg=${1}
 
 function help {
