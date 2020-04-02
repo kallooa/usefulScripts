@@ -94,5 +94,5 @@ msg.attach(part2)
 # Send the message via local SMTP server.
 server = SMTP(smtp_ssl_host, smtp_ssl_port)
 server.login(username, password)
-server.sendmail(sender, targets, msg.as_string())
+server.sendmail(sender, you, msg.as_string())
 server.quit()
