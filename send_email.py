@@ -6,7 +6,7 @@ smtp_ssl_host = '127.0.0.1'
 smtp_ssl_port = 1025
 username = 'sender@gmail.com'
 password = 'smtp password'
-you = "recipiento@gmail.com"
+recipient = "recipiento@gmail.com"
 
 email_signature = """
 
@@ -67,7 +67,7 @@ email_signature = """
 msg = MIMEMultipart('alternative')
 msg['Subject'] = "Yo"
 msg['From'] = username
-msg['To'] = you
+msg['To'] = recipient
 
 # Create the body of the message (a plain-text and an HTML version).
 text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttp://www.python.org"
@@ -94,5 +94,5 @@ msg.attach(part2)
 # Send the message via local SMTP server.
 server = SMTP(smtp_ssl_host, smtp_ssl_port)
 server.login(username, password)
-server.sendmail(sender, you, msg.as_string())
+server.sendmail(username, recipient, msg.as_string())
 server.quit()
