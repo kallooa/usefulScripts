@@ -152,14 +152,14 @@ lead_data = pd.read_csv('/Users/aadi/Documents/200124NVCLARK.csv')
 ld = lead_data[['PRFirstName', 'PREmail', 'ProbateState', 'ProbateDate']]
 ld = ld[~ld.PREmail.isna()]
 
-for i in range(10):
+for i in range(ld.shape[0]):
     msg = MIMEMultipart('alternative')
     msg['Subject'] = "Please Read -- We are here to help :)"
     msg['From'] = username
     #you = ld.PREmail.iloc[i]
-    msg['To'] = you#ld.PREmail.iloc[i]
+    msg['To'] = you
     print(i, ld.PRFirstName.iloc[i], ld.PREmail.iloc[i])
-    # Create the body of the message (a plain-text and an HTML version).
+
     text = """
         Hi {first_name},\n
         My wife, Olivia, and I found your contact info from a legal filing (public record) made in {filing_month} {filing_year} with the {filing_state} courts.\n
@@ -172,7 +172,6 @@ for i in range(10):
                filing_state = states[ld.ProbateState.iloc[i]],
                first_name= ld.PRFirstName.iloc[i],
               )
-
 
     html = """\
     <html>
