@@ -8,6 +8,81 @@ username = 'sender@gmail.com'
 password = 'smtp password'
 recipient = "recipiento@gmail.com"
 
+months = {
+    1: 'January',
+    2: 'February',
+    3: 'March',
+    4: 'April', 
+    5: 'May', 
+    6: 'June', 
+    7: 'July',
+    8: 'August', 
+    9: 'September',
+    10: 'October',
+    11: 'November',
+    12: 'December'
+}
+
+states = {
+        'AK': 'Alaska',
+        'AL': 'Alabama',
+        'AR': 'Arkansas',
+        'AS': 'American Samoa',
+        'AZ': 'Arizona',
+        'CA': 'California',
+        'CO': 'Colorado',
+        'CT': 'Connecticut',
+        'DC': 'District of Columbia',
+        'DE': 'Delaware',
+        'FL': 'Florida',
+        'GA': 'Georgia',
+        'GU': 'Guam',
+        'HI': 'Hawaii',
+        'IA': 'Iowa',
+        'ID': 'Idaho',
+        'IL': 'Illinois',
+        'IN': 'Indiana',
+        'KS': 'Kansas',
+        'KY': 'Kentucky',
+        'LA': 'Louisiana',
+        'MA': 'Massachusetts',
+        'MD': 'Maryland',
+        'ME': 'Maine',
+        'MI': 'Michigan',
+        'MN': 'Minnesota',
+        'MO': 'Missouri',
+        'MP': 'Northern Mariana Islands',
+        'MS': 'Mississippi',
+        'MT': 'Montana',
+        'NA': 'National',
+        'NC': 'North Carolina',
+        'ND': 'North Dakota',
+        'NE': 'Nebraska',
+        'NH': 'New Hampshire',
+        'NJ': 'New Jersey',
+        'NM': 'New Mexico',
+        'NV': 'Nevada',
+        'NY': 'New York',
+        'OH': 'Ohio',
+        'OK': 'Oklahoma',
+        'OR': 'Oregon',
+        'PA': 'Pennsylvania',
+        'PR': 'Puerto Rico',
+        'RI': 'Rhode Island',
+        'SC': 'South Carolina',
+        'SD': 'South Dakota',
+        'TN': 'Tennessee',
+        'TX': 'Texas',
+        'UT': 'Utah',
+        'VA': 'Virginia',
+        'VI': 'Virgin Islands',
+        'VT': 'Vermont',
+        'WA': 'Washington',
+        'WI': 'Wisconsin',
+        'WV': 'West Virginia',
+        'WY': 'Wyoming'
+}
+
 email_signature = """
 
 <div class="protonmail_signature_block">
@@ -63,36 +138,72 @@ email_signature = """
 
 """
 
-# Create message container - the correct MIME type is multipart/alternative.
-msg = MIMEMultipart('alternative')
-msg['Subject'] = "Yo"
-msg['From'] = username
-msg['To'] = recipient
+from smtplib import SMTP
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
-# Create the body of the message (a plain-text and an HTML version).
-text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttp://www.python.org"
-html = """\
-<html>
-  <head></head>
-  <body>
-    <p>Hi!<br>
-       How are you?<br>
-       Here is the <a href="http://www.python.org">link</a> you wanted.
-    </p>
-    {email_signature}
-  </body>
-</html>
-""".format(email_signature=email_signature)
+smtp_ssl_host = '127.0.0.1'
+smtp_ssl_port = 1025
+username = 'aadi@noahrei.com'
+password = 'nIECeJV1k2hmwTh3NppfJA'
+you = "aadi.kalloo@gmail.com"
 
-# Record the MIME types of both parts - text/plain and text/html.
-part1 = MIMEText(text, 'plain')
-part2 = MIMEText(html, 'html')
+lead_data = pd.read_csv('/Users/aadi/Documents/200124NVCLARK.csv')
+ld = lead_data[['PRFirstName', 'PREmail', 'ProbateState', 'ProbateDate']]
+ld = ld[~ld.PREmail.isna()]
 
-msg.attach(part1)
-msg.attach(part2)
+for i in range(10):
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Please Read -- We are here to help :)"
+    msg['From'] = username
+    #you = ld.PREmail.iloc[i]
+    msg['To'] = you#ld.PREmail.iloc[i]
+    print(i, ld.PRFirstName.iloc[i], ld.PREmail.iloc[i])
+    # Create the body of the message (a plain-text and an HTML version).
+    text = """
+        Hi {first_name},\n
+        My wife, Olivia, and I found your contact info from a legal filing (public record) made in {filing_month} {filing_year} with the {filing_state} courts.\n
+        We specialize in helping people solve any real estate-related problems they might have. If you need to sell a property quickly, we can definitely help by providing you with a cash offer and a quick closing.\n
+        If you are not looking to sell a property at this point in time, please keep us in mind for the future.\n
+        The number below is my direct line. Feel free to reach out to me at any time and please let me know if we can be of assistance in any way at all.\n
+    """.format(email_signature=email_signature,
+               filing_month=months[pd.to_datetime(ld.ProbateDate.iloc[i]).month],
+               filing_year = pd.to_datetime(ld.ProbateDate.iloc[i]).year,
+               filing_state = states[ld.ProbateState.iloc[i]],
+               first_name= ld.PRFirstName.iloc[i],
+              )
 
-# Send the message via local SMTP server.
-server = SMTP(smtp_ssl_host, smtp_ssl_port)
-server.login(username, password)
-server.sendmail(username, recipient, msg.as_string())
-server.quit()
+
+    html = """\
+    <html>
+      <head></head>
+      <body>
+        <p>Hi {first_name},</p>
+        <p>My wife, Olivia, and I found your contact info from a legal filing (public record) made in {filing_month} {filing_year} with the {filing_state} courts. </p>
+        <p>We specialize in helping people solve any real estate-related problems they might have. If you need to sell a property quickly, we can definitely help by providing you with a cash offer and a quick closing.</p>
+        <p>If you are not looking to sell a property at this point in time, please keep us in mind for the future.</p>
+        <p>The number below is my direct line. Feel free to reach out to me at any time and please let me know if we can be of assistance in any way at all.</p>
+        <p>Best,<br>Aadi</p>
+        {email_signature}
+      </body>
+    </html>
+    """.format(email_signature=email_signature,
+               filing_month=months[pd.to_datetime(ld.ProbateDate.iloc[i]).month],
+               filing_year = pd.to_datetime(ld.ProbateDate.iloc[i]).year,
+               filing_state = states[ld.ProbateState.iloc[i]],
+               first_name= ld.PRFirstName.iloc[i],
+              )
+
+    # Record the MIME types of both parts - text/plain and text/html.
+    part1 = MIMEText(text, 'plain')
+    part2 = MIMEText(html, 'html')
+
+    msg.attach(part1)
+    msg.attach(part2)
+
+    # Send the message via local SMTP server.
+    server = SMTP(smtp_ssl_host, smtp_ssl_port)
+    server.login(username, password)
+    server.sendmail(sender, you, msg.as_string())
+    server.quit()
+    sleep(1)
