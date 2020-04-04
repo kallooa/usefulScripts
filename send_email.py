@@ -1,3 +1,5 @@
+#https://gist.github.com/nickoala/569a9d191d088d82a5ef5c03c0690a02
+
 from smtplib import SMTP
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
