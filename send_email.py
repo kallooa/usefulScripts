@@ -140,15 +140,11 @@ email_signature = """
 
 """
 
-from smtplib import SMTP
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
 smtp_ssl_host = '127.0.0.1'
 smtp_ssl_port = 1025
 username = 'aadi@noahrei.com'
 password = 'nIECeJV1k2hmwTh3NppfJA'
-you = "aadi.kalloo@gmail.com"
+#you = "aadi.kalloo@gmail.com"
 
 lead_data = pd.read_csv('/Users/aadi/Documents/200124NVCLARK.csv')
 ld = lead_data[['PRFirstName', 'PREmail', 'ProbateState', 'ProbateDate']]
